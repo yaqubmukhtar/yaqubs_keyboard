@@ -1,0 +1,289 @@
+units:
+  # Defaults to M2 screws
+  screwSize: 5
+points:
+  zones:
+    matrix:
+      anchor:
+        shift: [100, -100]
+      key:
+        padding: 1U
+        spread: 1U
+      columns:
+        pinky1:
+        ring1:
+        middle1:
+        index1:
+        inner1:
+          rows.space.skip: true
+        thumb1:
+          rows.space.skip: true
+        thumb2:
+          key:
+            spread: 6u
+          rows.space.skip: true
+        inner2:
+          rows.space.skip: true
+        index2:
+        middle2:
+        ring2:
+        pinky2:
+        col1:
+        col2:
+        col3:
+        
+      rows:
+        space:
+        bottom:
+        home:
+        top:
+        num:
+        func:
+    thumb1:
+      key:
+      anchor:
+        ref: matrix_inner1_space
+        shift: [0.5u, 0]
+      columns:
+        space:
+          key:
+            width: 1.95u
+    thumb2:
+      key:
+      anchor:
+        ref: matrix_inner2_space
+        shift: [-0.5u, 0]
+      columns:
+        space:
+          key:
+            width: 1.95u
+outlines:
+  board:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_pinky1_func
+          shift: [-1.0u,0.5u+6]
+        - ref: matrix_col3_func
+          shift: [1.0u,0.5u+6]
+        - ref: matrix_col3_space
+          shift: [1.0u,-0.5u-7]
+        - ref: matrix_pinky1_space
+          shift: [-1.0u,-0.5u-7]
+      fillet: 5
+  keys:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [1u-5,1u-5]
+  leftPlate:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_pinky1_func
+          shift: [-0.5u-3,0.5u+3]
+        - ref: matrix_thumb1_func
+          shift: [0.5u+3,0.5u+3]
+        - ref: matrix_thumb1_bottom
+          shift: [0.5u+3,-1.5u-3]
+        - ref: matrix_pinky1_space
+          shift: [-0.5u-3,-0.5u-3]
+  rightPlate:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_col3_func
+          shift: [0.5u+3,0.5u+3]
+        - ref: matrix_thumb2_func
+          shift: [-0.5u-3,0.5u+3]
+        - ref: matrix_thumb2_bottom
+          shift: [-0.5u-3,-1.5u-3]
+        - ref: matrix_col3_space
+          shift: [0.5u+3,-0.5u-3]
+  plateOutline:
+    - name: rightPlate
+    - operation: add
+      name: leftPlate
+  plateOut:
+    - name: plateOutline
+    - operation: subtract
+      name: keys
+  combo:
+    - name: board
+    - operation: subtract
+      name: keys
+  pcb:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_pinky1_func
+          shift: [-0.5u-3,0.5u+3]
+        - ref: matrix_col3_func
+          shift: [0.5u+3,0.5u+3]
+        - ref: matrix_col3_space
+          shift: [0.5u+3,-0.5u-3]
+        - ref: matrix_pinky1_space
+          shift: [-0.5u-3,-0.5u-3]
+  mounting:
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_pinky1_func]
+        shift: [0.5u, -0.5u]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_col3_func]
+        shift: [-0.5u, -0.5u]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_pinky1_space]
+        shift: [0.5u, 0.5u]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_col3_space]
+        shift: [-0.5u, 0.5u]
+  plateMounting:
+    - what: circle
+      radius: 1
+      where:
+        ref: [matrix_pinky1_func]
+        shift: [0.5u, -0.5u]
+    - what: circle
+      radius: 1
+      where:
+        ref: [matrix_col3_func]
+        shift: [-0.5u, -0.5u]
+    - what: circle
+      radius: 1
+      where:
+        ref: [matrix_pinky1_space]
+        shift: [0.5u, 0.5u]
+    - what: circle
+      radius: 1
+      where:
+        ref: [matrix_col3_space]
+        shift: [-0.5u, 0.5u]
+    - what: circle
+      radius: 1
+      where:
+        ref: [matrix_index1_func]
+        shift: [0.5u, -0.5u]
+    - what: circle
+      radius: 1
+      where:
+        ref: [matrix_index2_func]
+        shift: [-0.5u, -0.5u]
+    - what: circle
+      radius: 1
+      where:
+        ref: [matrix_thumb1_bottom]
+        shift: [0.25u, -1u]
+    - what: circle
+      radius: 1
+      where:
+        ref: [matrix_thumb2_bottom]
+        shift: [-0.25u, -1u]
+  plate:
+    - name: plateOut
+    - operation: subtract
+      name: plateMounting
+pcbs:
+  keyboard:
+    outlines:
+      main:
+        outline: pcb
+    footprints:
+      outemu_whites:
+        what: mx
+        where: true
+        params:
+          keycaps: true
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+      diode:
+        what: diode
+        where: true
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -5]
+      holeTopLeft:
+        what: mountinghole
+        where:
+          ref: [matrix_pinky1_func]
+          shift: [0.5u, -0.5u]
+      holeTopRight:
+        what: mountinghole
+        where:
+          ref: [matrix_col3_func]
+          shift: [-0.5u, -0.5u]
+      holeBottomLeft:
+        what: mountinghole
+        where:
+          ref: [matrix_pinky1_space]
+          shift: [0.5u, 0.5u]
+      holeBottomRight:
+        what: mountinghole
+        where:
+          ref: [matrix_col3_space]
+          shift: [-0.5u, 0.5u]
+      holeInnerLeft:
+        what: mountinghole
+        where:
+          ref: [matrix_index1_func]
+          shift: [0.5u, -0.5u]
+      holeInnerRight:
+        what: mountinghole
+        where:
+          ref: [matrix_index2_func]
+          shift: [-0.5u, -0.5u]
+      holeThumbLeft:
+        what: mountinghole
+        where:
+          ref: [matrix_thumb1_bottom]
+          shift: [0.25u, -1u]
+      holeThumbRight:
+        what: mountinghole
+        where:
+          ref: [matrix_thumb2_bottom]
+          shift: [-0.25u, -1u]
+cases:
+  _bottomOutline:
+    - name: board
+      extrude: 5
+  _outerWall:
+    - name: board
+      extrude: 20
+  _innerWall:
+    - name: pcb
+      extrude: 20
+  _wall:
+    - what: case
+      name: _outerWall
+      operation: add
+    - what: case
+      name: _innerWall
+      operation: subtract
+  _standoffs:
+    - name: mounting
+      extrude: 15
+  plate:
+    - name: plate
+      extrude: 1.5
+  case:
+    - what: case
+      name: _bottomOutline
+      operation: add
+    - what: case
+      name: _wall
+      operation: add
+    - what: case
+      name: _standoffs
+      operation: add
+
+

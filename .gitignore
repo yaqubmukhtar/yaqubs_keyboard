@@ -1,0 +1,7 @@
+# Ignore KiCAD Backups, going to keep them local to PC
+/Design \Files/Electrical/*
+!/Design \Files/Electrical/yaqubs_keyboard.kicad_pcb
+!/Design \Files/Electrical/yaqubs_keyboard.kicad_sch
+!/Design \Files/Electrical/yaqubs_keyboard.kicad_pro
+!/Design \Files/Electrical/yaqubs_keyboard.kicad_pcprl
+/Design \Files/Mechanical/output/pcbs/~_autosave-keyboard_pcb.lck
